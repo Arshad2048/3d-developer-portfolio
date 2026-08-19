@@ -1,0 +1,5 @@
+(10 seconds total, 60fps, smooth cinematic continuous shot)
+[0-3s]: Camera glides smoothly forward over the wooden curved desk, focusing on the mechanical keyboard and glowing syntax code on dual monitors.
+[3-7s]: Camera banks slightly right and dives straight toward the terminal screen showing running React and Node scripts.
+[7-10s]: Seamlessly fly through the glowing monitor bezel straight into the industrial MERN pipeline engine room with spinning cyan React core and green Node pipe conduits.
+No camera cuts, continuous forward motion, warm studio lighting, 60fps.

@@ -1,0 +1,5 @@
+(10 seconds total, 60fps, smooth cinematic continuous shot)
+[0-3s]: Camera glides between the translucent green Supabase database pillars and pulsating real-time sync beacon towers.
+[3-7s]: Forward flight tracing the glowing PostgreSQL schema grid floor lines across the central query processor.
+[7-10s]: Camera glides up and out through the database security gate, expanding smoothly into the open project showcase arena featuring Majdoor Mitra and SpendWise pedestals.
+No camera cuts, smooth continuous forward flight, warm studio lighting, 60fps.

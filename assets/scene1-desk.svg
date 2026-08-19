@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <radialGradient id="deskShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#241d2b" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#241d2b" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="clayBase" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2D9CC"/>
+      <stop offset="100%" stop-color="#C5B8A5"/>
+    </linearGradient>
+    <linearGradient id="clayTable" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F2EDE4"/>
+      <stop offset="100%" stop-color="#DFD6C7"/>
+    </linearGradient>
+    <linearGradient id="screenGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Shadow Floor -->
+  <ellipse cx="400" cy="480" rx="320" ry="90" fill="url(#deskShadow)" />
+
+  <!-- Floating Island Base (Isometric Clay Diorama) -->
+  <g transform="translate(0, -20)">
+    <!-- Base Bottom Edge -->
+    <path d="M 160 380 L 400 490 L 640 380 L 640 410 L 400 520 L 160 410 Z" fill="#B3A48F" />
+    <path d="M 400 490 L 640 380 L 640 410 L 400 520 Z" fill="#9C8D78" />
+
+    <!-- Island Top Surface -->
+    <polygon points="400,270 640,380 400,490 160,380" fill="url(#clayBase)" />
+
+    <!-- Miniature Ceramic Rug -->
+    <polygon points="400,320 570,400 400,470 230,400" fill="#ECE5D8" />
+    <polygon points="400,335 550,400 400,460 250,400" fill="#DFD7C7" />
+
+    <!-- Curved Clay Desk Legs -->
+    <rect x="280" y="340" width="12" height="60" rx="6" fill="#78716C" />
+    <rect x="510" y="340" width="12" height="60" rx="6" fill="#78716C" />
+    <rect x="395" y="375" width="12" height="60" rx="6" fill="#57534E" />
+
+    <!-- Desk Surface Isometric Plate -->
+    <polygon points="400,260 560,330 400,400 240,330" fill="url(#clayTable)" />
+    <polygon points="400,400 560,330 560,342 400,412" fill="#C5B9A7" />
+    <polygon points="400,400 240,330 240,342 400,412" fill="#D6CBBA" />
+
+    <!-- Primary Ultrawide Monitor -->
+    <rect x="350" y="275" width="8" height="30" rx="4" fill="#64748B" />
+    <ellipse cx="354" cy="305" rx="16" ry="6" fill="#475569" />
+    <polygon points="300,180 440,225 440,290 300,245" fill="#1E293B" />
+    <polygon points="305,188 435,230 435,283 305,241" fill="url(#screenGrad1)" />
+    <!-- Code Lines on Screen -->
+    <line x1="315" y1="205" x2="360" y2="218" stroke="#06B6D4" stroke-width="4" stroke-linecap="round" />
+    <line x1="325" y1="218" x2="380" y2="233" stroke="#6366F1" stroke-width="3" stroke-linecap="round" />
+    <line x1="325" y1="228" x2="410" y2="253" stroke="#10B981" stroke-width="3" stroke-linecap="round" />
+    <line x1="315" y1="240" x2="370" y2="256" stroke="#F59E0B" stroke-width="3" stroke-linecap="round" />
+    <line x1="330" y1="252" x2="420" y2="277" stroke="#38BDF8" stroke-width="3" stroke-linecap="round" />
+
+    <!-- Vertical Coding Monitor -->
+    <polygon points="460,200 520,225 520,320 460,295" fill="#1E293B" />
+    <polygon points="464,206 516,228 516,314 464,292" fill="#0F172A" />
+    <line x1="472" y1="225" x2="508" y2="240" stroke="#F97316" stroke-width="3" stroke-linecap="round" />
+    <line x1="472" y1="238" x2="502" y2="250" stroke="#06B6D4" stroke-width="3" stroke-linecap="round" />
+    <line x1="472" y1="250" x2="510" y2="265" stroke="#A855F7" stroke-width="3" stroke-linecap="round" />
+    <line x1="472" y1="262" x2="495" y2="272" stroke="#10B981" stroke-width="3" stroke-linecap="round" />
+
+    <!-- Mechanical Keyboard & Mouse -->
+    <polygon points="340,325 390,345 375,360 325,340" fill="#334155" />
+    <polygon points="342,328 388,346 376,357 330,339" fill="#6366F1" />
+    <ellipse cx="420" cy="355" rx="8" ry="5" fill="#06B6D4" />
+
+    <!-- Clay Coffee Mug -->
+    <ellipse cx="270" cy="315" rx="8" ry="4" fill="#F97316" />
+    <path d="M 262 315 C 262 328 278 328 278 315 Z" fill="#EA580C" />
+    <ellipse cx="270" cy="315" rx="6" ry="3" fill="#78350F" />
+    <path d="M 270 305 Q 266 295 272 285" stroke="#D6D3D1" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6"/>
+
+    <!-- Clay Succulent Plant in Pot -->
+    <ellipse cx="530" cy="310" rx="12" ry="6" fill="#C2410C" />
+    <path d="M 518 310 L 522 330 L 538 330 L 542 310 Z" fill="#9A3412" />
+    <circle cx="530" cy="305" r="7" fill="#10B981" />
+    <circle cx="525" cy="303" r="5" fill="#34D399" />
+    <circle cx="535" cy="303" r="5" fill="#059669" />
+
+    <!-- Floating Badge Orbs -->
+    <circle cx="210" cy="230" r="22" fill="#06B6D4" filter="url(#softGlow)" opacity="0.9" />
+    <text x="210" y="235" font-family="monospace" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle">MERN</text>
+
+    <circle cx="580" cy="190" r="22" fill="#F97316" filter="url(#softGlow)" opacity="0.9" />
+    <text x="580" y="195" font-family="monospace" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle">AI</text>
+
+    <circle cx="400" cy="130" r="22" fill="#10B981" filter="url(#softGlow)" opacity="0.9" />
+    <text x="400" y="135" font-family="monospace" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle">SQL</text>
+  </g>
+</svg>

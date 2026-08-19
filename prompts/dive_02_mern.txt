@@ -1,0 +1,5 @@
+(10 seconds total, 60fps, smooth cinematic continuous shot)
+[0-3s]: Camera travels alongside the glowing green Node.js and Express pipe conduits, observing pulsating data flow particles.
+[3-7s]: Forward flight orbiting around the spinning cyan React atom core and past the MongoDB storage pillars.
+[7-10s]: Camera dives forward through the data pipeline conduit, emerging seamlessly into the Python AI automation lab with glowing neural network nodes and robotic arm.
+No camera cuts, smooth forward tracking, crisp low-poly clay render, 60fps.

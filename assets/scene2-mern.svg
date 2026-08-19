@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <radialGradient id="mernShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#241d2b" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#241d2b" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mernBase" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2D9CC"/>
+      <stop offset="100%" stop-color="#C5B8A5"/>
+    </linearGradient>
+    <linearGradient id="reactCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="nodeGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="mongoGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <filter id="softGlow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <ellipse cx="400" cy="480" rx="320" ry="90" fill="url(#mernShadow)" />
+
+  <g transform="translate(0, -20)">
+    <!-- Base Platform -->
+    <path d="M 160 380 L 400 490 L 640 380 L 640 410 L 400 520 L 160 410 Z" fill="#B3A48F" />
+    <polygon points="400,270 640,380 400,490 160,380" fill="url(#mernBase)" />
+
+    <!-- Node.js Pipeline Pipes -->
+    <path d="M 280 340 L 400 400 L 520 340" stroke="#059669" stroke-width="18" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 280 340 L 400 400 L 520 340" stroke="#34D399" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Node.js Hex Server Towers -->
+    <polygon points="280,260 320,280 320,350 280,330" fill="#047857" />
+    <polygon points="280,260 240,280 240,350 280,330" fill="#059669" />
+    <polygon points="280,260 320,280 280,300 240,280" fill="#10B981" />
+    <text x="280" y="325" font-family="monospace" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">NODE</text>
+
+    <!-- Express Router Hub Center -->
+    <polygon points="400,320 440,340 440,410 400,390" fill="#334155" />
+    <polygon points="400,320 360,340 360,410 400,390" fill="#475569" />
+    <polygon points="400,320 440,340 400,360 360,340" fill="#64748B" />
+    <text x="400" y="380" font-family="monospace" font-size="10" font-weight="bold" fill="#F8FAFC" text-anchor="middle">EXPRESS</text>
+
+    <!-- MongoDB Storage Cluster (Right) -->
+    <polygon points="520,260 560,280 560,350 520,330" fill="#065F46" />
+    <polygon points="520,260 480,280 480,350 520,330" fill="#047857" />
+    <polygon points="520,260 560,280 520,300 480,280" fill="#059669" />
+    <text x="520" y="325" font-family="monospace" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">MONGO</text>
+
+    <!-- Floating React Atom (Top Center) -->
+    <g transform="translate(400, 180)">
+      <!-- Atom Core -->
+      <circle cx="0" cy="0" r="18" fill="#06B6D4" filter="url(#softGlow2)" />
+      <text x="0" y="5" font-family="monospace" font-size="10" font-weight="bold" fill="#FFFFFF" text-anchor="middle">REACT</text>
+      <!-- Orbital Rings -->
+      <ellipse cx="0" cy="0" rx="55" ry="20" fill="none" stroke="#38BDF8" stroke-width="4" transform="rotate(0)" opacity="0.85" />
+      <ellipse cx="0" cy="0" rx="55" ry="20" fill="none" stroke="#38BDF8" stroke-width="4" transform="rotate(60)" opacity="0.85" />
+      <ellipse cx="0" cy="0" rx="55" ry="20" fill="none" stroke="#38BDF8" stroke-width="4" transform="rotate(120)" opacity="0.85" />
+      <!-- Orbital Electrons -->
+      <circle cx="50" cy="0" r="5" fill="#FFFFFF" />
+      <circle cx="-25" cy="40" r="5" fill="#FFFFFF" />
+      <circle cx="-25" cy="-40" r="5" fill="#FFFFFF" />
+    </g>
+
+    <!-- Glowing Data Flow Pulses -->
+    <circle cx="340" cy="370" r="6" fill="#38BDF8" filter="url(#softGlow2)" />
+    <circle cx="460" cy="370" r="6" fill="#10B981" filter="url(#softGlow2)" />
+    <circle cx="400" cy="250" r="7" fill="#6366F1" filter="url(#softGlow2)" />
+  </g>
+</svg>

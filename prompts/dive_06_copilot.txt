@@ -1,0 +1,5 @@
+(10 seconds total, 60fps, smooth cinematic continuous shot)
+[0-3s]: Camera glides smoothly forward toward the central holographic AI avatar sphere as its rings spin with pink and indigo light.
+[3-7s]: Camera orbits gently around the AI command deck, capturing the communication antenna and the rocket launch beacon.
+[7-10s]: Camera pulls up slowly into a stable, peaceful hero posture framing the full command deck against the clean warm studio backdrop.
+No camera cuts, smooth continuous motion, warm studio lighting, 60fps.

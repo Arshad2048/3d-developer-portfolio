@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="100%" height="100%">
+  <defs>
+    <linearGradient id="swBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#022C22"/>
+    </linearGradient>
+    <linearGradient id="greenGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="600" height="360" rx="16" fill="url(#swBg)" />
+  
+  <!-- Browser Frame Header -->
+  <rect width="600" height="42" rx="16" fill="#021C16" />
+  <circle cx="28" cy="21" r="6" fill="#EF4444" />
+  <circle cx="48" cy="21" r="6" fill="#F59E0B" />
+  <circle cx="68" cy="21" r="6" fill="#10B981" />
+  <rect x="100" y="10" width="400" height="22" rx="6" fill="#064E3B" />
+  <text x="300" y="25" font-family="sans-serif" font-size="11" fill="#6EE7B7" text-anchor="middle">https://github.com/Arshad2048/spendwise</text>
+
+  <!-- App Header -->
+  <g transform="translate(30, 60)">
+    <rect width="540" height="45" rx="8" fill="#064E3B" opacity="0.6"/>
+    <text x="20" y="28" font-family="sans-serif" font-weight="bold" font-size="18" fill="#34D399">SpendWise</text>
+    <text x="125" y="28" font-family="sans-serif" font-size="12" fill="#94A3B8">| Smart Expense Tracker</text>
+    <rect x="420" y="10" width="105" height="25" rx="6" fill="url(#greenGlow)" />
+    <text x="472" y="27" font-family="sans-serif" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle">+ Add Expense</text>
+  </g>
+
+  <!-- KPI Stat Cards -->
+  <g transform="translate(30, 115)">
+    <!-- Card 1 Total Balance -->
+    <rect x="0" y="0" width="170" height="70" rx="8" fill="#064E3B" />
+    <text x="15" y="22" font-family="sans-serif" font-size="11" fill="#A7F3D0">Total Balance</text>
+    <text x="15" y="48" font-family="sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">₹48,250.00</text>
+    <text x="15" y="62" font-family="sans-serif" font-size="9" fill="#34D399">↑ +14.2% this month</text>
+
+    <!-- Card 2 Monthly Spend -->
+    <rect x="185" y="0" width="170" height="70" rx="8" fill="#064E3B" />
+    <text x="200" y="22" font-family="sans-serif" font-size="11" fill="#A7F3D0">Monthly Spend</text>
+    <text x="200" y="48" font-family="sans-serif" font-size="18" font-weight="bold" fill="#F87171">₹12,490.00</text>
+    <text x="200" y="62" font-family="sans-serif" font-size="9" fill="#94A3B8">Under budget (₹20k limit)</text>
+
+    <!-- Card 3 Savings Goal -->
+    <rect x="370" y="0" width="170" height="70" rx="8" fill="#064E3B" />
+    <text x="385" y="22" font-family="sans-serif" font-size="11" fill="#A7F3D0">Savings Target</text>
+    <text x="385" y="48" font-family="sans-serif" font-size="18" font-weight="bold" fill="#38BDF8">78.5%</text>
+    <rect x="385" y="55" width="140" height="6" rx="3" fill="#022C22" />
+    <rect x="385" y="55" width="110" height="6" rx="3" fill="#38BDF8" />
+  </g>
+
+  <!-- Bottom Visual Analytics & Recent Transactions -->
+  <g transform="translate(30, 195)">
+    <!-- Analytics Chart Block (Left) -->
+    <rect x="0" y="0" width="260" height="135" rx="8" fill="#064E3B" opacity="0.8"/>
+    <text x="15" y="22" font-family="sans-serif" font-size="12" font-weight="bold" fill="#F8FAFC">Weekly Breakdown</text>
+    <!-- Bar chart -->
+    <rect x="25" y="80" width="18" height="35" rx="3" fill="#34D399" />
+    <rect x="55" y="50" width="18" height="65" rx="3" fill="#10B981" />
+    <rect x="85" y="70" width="18" height="45" rx="3" fill="#34D399" />
+    <rect x="115" y="40" width="18" height="75" rx="3" fill="#059669" />
+    <rect x="145" y="60" width="18" height="55" rx="3" fill="#10B981" />
+    <rect x="175" y="30" width="18" height="85" rx="3" fill="#34D399" />
+    <rect x="205" y="45" width="18" height="70" rx="3" fill="#10B981" />
+    <line x1="20" y1="118" x2="235" y2="118" stroke="#047857" stroke-width="1.5"/>
+
+    <!-- Recent Transactions Block (Right) -->
+    <rect x="280" y="0" width="260" height="135" rx="8" fill="#064E3B" opacity="0.8"/>
+    <text x="295" y="22" font-family="sans-serif" font-size="12" font-weight="bold" fill="#F8FAFC">Recent Transactions</text>
+    
+    <g transform="translate(295, 35)">
+      <circle cx="10" cy="10" r="10" fill="#022C22" />
+      <text x="10" y="14" font-size="10" text-anchor="middle">🛒</text>
+      <text x="30" y="10" font-family="sans-serif" font-size="11" fill="#F8FAFC">Grocery Supermart</text>
+      <text x="30" y="20" font-family="sans-serif" font-size="9" fill="#94A3B8">Food • Today</text>
+      <text x="220" y="14" font-family="sans-serif" font-size="11" font-weight="bold" fill="#F87171">-₹1,420</text>
+    </g>
+
+    <g transform="translate(295, 68)">
+      <circle cx="10" cy="10" r="10" fill="#022C22" />
+      <text x="10" y="14" font-size="10" text-anchor="middle">⚡</text>
+      <text x="30" y="10" font-family="sans-serif" font-size="11" fill="#F8FAFC">Electric Bill Pay</text>
+      <text x="30" y="20" font-family="sans-serif" font-size="9" fill="#94A3B8">Utilities • Yesterday</text>
+      <text x="220" y="14" font-family="sans-serif" font-size="11" font-weight="bold" fill="#F87171">-₹850</text>
+    </g>
+
+    <g transform="translate(295, 101)">
+      <circle cx="10" cy="10" r="10" fill="#022C22" />
+      <text x="10" y="14" font-size="10" text-anchor="middle">💼</text>
+      <text x="30" y="10" font-family="sans-serif" font-size="11" fill="#F8FAFC">Freelance Project</text>
+      <text x="30" y="20" font-family="sans-serif" font-size="9" fill="#94A3B8">Income • 2 days ago</text>
+      <text x="220" y="14" font-family="sans-serif" font-size="11" font-weight="bold" fill="#34D399">+₹15,000</text>
+    </g>
+  </g>
+</svg>

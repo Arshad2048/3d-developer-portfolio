@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="100%" height="100%">
+  <defs>
+    <linearGradient id="mmBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="orangeBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="600" height="360" rx="16" fill="url(#mmBg)" />
+  
+  <!-- Browser Frame Header -->
+  <rect width="600" height="42" rx="16" fill="#0F172A" />
+  <circle cx="28" cy="21" r="6" fill="#EF4444" />
+  <circle cx="48" cy="21" r="6" fill="#F59E0B" />
+  <circle cx="68" cy="21" r="6" fill="#10B981" />
+  <rect x="100" y="10" width="400" height="22" rx="6" fill="#1E293B" />
+  <text x="300" y="25" font-family="sans-serif" font-size="11" fill="#94A3B8" text-anchor="middle">https://github.com/Arshad2048/majdoor-mitra</text>
+
+  <!-- UI App Screen Mockup -->
+  <!-- Top Navigation in App -->
+  <rect x="30" y="60" width="540" height="50" rx="10" fill="#1E293B" />
+  <text x="50" y="90" font-family="sans-serif" font-weight="bold" font-size="18" fill="#F59E0B">मजदूर मित्र (Majdoor Mitra)</text>
+  <rect x="440" y="72" width="110" height="26" rx="6" fill="url(#orangeBar)" />
+  <text x="495" y="89" font-family="sans-serif" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle">+ Post Job / Find</text>
+
+  <!-- Left Sidebar / Category Filter -->
+  <rect x="30" y="125" width="160" height="205" rx="10" fill="#1E293B" />
+  <text x="45" y="150" font-family="sans-serif" font-size="12" font-weight="bold" fill="#CBD5E1">Skilled Trades</text>
+  <rect x="45" y="165" width="130" height="24" rx="4" fill="#334155" />
+  <text x="55" y="181" font-family="sans-serif" font-size="11" fill="#F59E0B">🔨 Construction / Mason</text>
+  <rect x="45" y="195" width="130" height="24" rx="4" fill="#0F172A" />
+  <text x="55" y="211" font-family="sans-serif" font-size="11" fill="#94A3B8">⚡ Electrician</text>
+  <rect x="45" y="225" width="130" height="24" rx="4" fill="#0F172A" />
+  <text x="55" y="241" font-family="sans-serif" font-size="11" fill="#94A3B8">🚰 Plumbing &amp; Sanitary</text>
+  <rect x="45" y="255" width="130" height="24" rx="4" fill="#0F172A" />
+  <text x="55" y="271" font-family="sans-serif" font-size="11" fill="#94A3B8">🎨 Painting &amp; Renovation</text>
+  <rect x="45" y="285" width="130" height="24" rx="4" fill="#0F172A" />
+  <text x="55" y="301" font-family="sans-serif" font-size="11" fill="#94A3B8">🚛 Logistics &amp; Helper</text>
+
+  <!-- Right Main Job Listings Cards -->
+  <g transform="translate(205, 125)">
+    <!-- Card 1 -->
+    <rect x="0" y="0" width="365" height="95" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+    <text x="15" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#F8FAFC">Commercial Masonry Team Required</text>
+    <text x="15" y="45" font-family="sans-serif" font-size="11" fill="#94A3B8">Location: City Center • 5 Days Work • Daily Wage: ₹850/day</text>
+    <rect x="15" y="60" width="70" height="20" rx="4" fill="#065F46" />
+    <text x="50" y="74" font-family="sans-serif" font-size="9" font-weight="bold" fill="#34D399" text-anchor="middle">Verified Job</text>
+    <rect x="95" y="60" width="80" height="20" rx="4" fill="#1E1B4B" />
+    <text x="135" y="74" font-family="sans-serif" font-size="9" font-weight="bold" fill="#818CF8" text-anchor="middle">Direct Call 📞</text>
+    <rect x="270" y="58" width="80" height="24" rx="6" fill="#F59E0B" />
+    <text x="310" y="74" font-family="sans-serif" font-size="10" font-weight="bold" fill="#000000" text-anchor="middle">Apply Now</text>
+
+    <!-- Card 2 -->
+    <rect x="0" y="110" width="365" height="95" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+    <text x="15" y="135" font-family="sans-serif" font-size="14" font-weight="bold" fill="#F8FAFC">Urgent Residential Electrician Need</text>
+    <text x="15" y="155" font-family="sans-serif" font-size="11" fill="#94A3B8">Location: West Hills • Instant Pay • ₹1200/day</text>
+    <rect x="15" y="170" width="70" height="20" rx="4" fill="#065F46" />
+    <text x="50" y="184" font-family="sans-serif" font-size="9" font-weight="bold" fill="#34D399" text-anchor="middle">Instant Hire</text>
+    <rect x="95" y="170" width="95" height="20" rx="4" fill="#374151" />
+    <text x="142" y="184" font-family="sans-serif" font-size="9" font-weight="bold" fill="#F3F4F6" text-anchor="middle">Hindi / English</text>
+    <rect x="270" y="168" width="80" height="24" rx="6" fill="#F59E0B" />
+    <text x="310" y="184" font-family="sans-serif" font-size="10" font-weight="bold" fill="#000000" text-anchor="middle">Apply Now</text>
+  </g>
+</svg>

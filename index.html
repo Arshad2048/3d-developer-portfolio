@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Arshad Khan — The 3D World of Full-Stack & AI</title>
+  <meta name="description" content="Scroll to fly through the 3D isometric engineering universe of Arshad Khan — Full-Stack MERN, Python AI Chatbots, and Database Systems." />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- GSAP & ScrollTrigger for Industry-Standard Smooth Video Scrubbing -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       1. THEME & ENGINE STYLING (lets-scroll)
+       ========================================================================== */
+    :root, .sw-root {
+      --sw-bg: #F7F4EE;          /* Exact match for the 3D clay diorama solid background */
+      --sw-ink: #18181B;          /* Deep rich charcoal */
+      --sw-ink-soft: #52525B;     /* Slate muted secondary text */
+      --sw-accent: #6366F1;       /* Indigo core brand accent */
+      --sw-font-display: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      --sw-font-body: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--sw-bg);
+      color: var(--sw-ink);
+      font-family: var(--sw-font-body);
+      overflow-x: hidden;
+    }
+
+    /* Floating Project Showcase Modal & AI Assistant Drawer */
+    .portal-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 17, 23, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .portal-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .portal-modal {
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 24px;
+      width: min(900px, 94vw);
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 36px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35);
+      position: relative;
+      transform: translateY(20px) scale(0.98);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .portal-modal-overlay.active .portal-modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #F4F4F5;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #71717A;
+      transition: all 0.2s;
+    }
+
+    .modal-close-btn:hover {
+      background: #18181B;
+      color: #FFFFFF;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .project-card {
+      background: #FAFAFA;
+      border: 1px solid #E4E4E7;
+      border-radius: 18px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: all 0.25s ease;
+    }
+
+    .project-card:hover {
+      border-color: #6366F1;
+      box-shadow: 0 12px 28px -8px rgba(99, 102, 241, 0.18);
+      transform: translateY(-3px);
+    }
+
+    .project-card-img {
+      width: 100%;
+      border-radius: 12px;
+      background: #EBE5D9;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .project-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: #6366F1;
+      background: rgba(99, 102, 241, 0.1);
+      padding: 4px 10px;
+      border-radius: 999px;
+      align-self: flex-start;
+    }
+
+    .project-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin: 0;
+      color: #18181B;
+    }
+
+    .project-desc {
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: #52525B;
+      margin: 0;
+    }
+
+    .project-tech-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .project-tech-pill {
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      background: #F4F4F5;
+      color: #3F3F46;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 12px;
+    }
+
+    .project-btn {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .project-btn--primary {
+      background: #18181B;
+      color: #FFFFFF;
+    }
+    .project-btn--primary:hover {
+      background: #6366F1;
+    }
+
+    .project-btn--outline {
+      border: 1px solid #D4D4D8;
+      color: #18181B;
+    }
+    .project-btn--outline:hover {
+      background: #F4F4F5;
+    }
+
+    /* Floating Copilot Dock Button */
+    .copilot-dock-btn {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 100;
+      background: #18181B;
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      padding: 12px 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .copilot-dock-btn:hover {
+      background: #6366F1;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(99, 102, 241, 0.4);
+    }
+
+    .copilot-pulse {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.3);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.7; }
+    }
+
+    /* Copilot Chat Drawer */
+    .copilot-drawer {
+      position: fixed;
+      bottom: 90px;
+      right: 28px;
+      width: min(420px, 90vw);
+      height: min(560px, 75vh);
+      background: #FFFFFF;
+      border-radius: 20px;
+      border: 1px solid #E4E4E7;
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.3);
+      z-index: 950;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .copilot-drawer.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .copilot-drawer-header {
+      padding: 16px 20px;
+      background: #18181B;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .copilot-drawer-header h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .copilot-drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #FBFBFA;
+    }
+
+    .chat-bubble {
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      max-width: 86%;
+    }
+
+    .chat-bubble.bot {
+      background: #F4F4F5;
+      color: #18181B;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-bubble.user {
+      background: #6366F1;
+      color: #FFFFFF;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .copilot-drawer-footer {
+      padding: 14px 16px;
+      border-top: 1px solid #E4E4E7;
+      display: flex;
+      gap: 8px;
+      background: #FFFFFF;
+    }
+
+    .copilot-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid #D4D4D8;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .copilot-input:focus {
+      border-color: #6366F1;
+    }
+
+    .copilot-send {
+      background: #18181B;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 999px;
+      padding: 0 16px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .copilot-send:hover {
+      background: #6366F1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Anchors -->
+  <div id="top"></div>
+
+  <!-- The lets-scroll World Container (Whole viewport scroll-scrubbed camera flight) -->
+  <div id="world"></div>
+
+  <!-- Floating Copilot Dock Button -->
+  <button class="copilot-dock-btn" id="open-copilot-btn">
+    <span class="copilot-pulse"></span>
+    <span>Ask Arshad AI Copilot</span>
+  </button>
+
+  <!-- Live In-Browser AI Copilot Drawer -->
+  <div class="copilot-drawer" id="copilot-drawer">
+    <div class="copilot-drawer-header">
+      <h3><span>✦</span> Arshad's AI Copilot</h3>
+      <button class="modal-close-btn" id="close-copilot-btn" style="position:static;width:30px;height:30px;font-size:1rem;color:#FFF;background:rgba(255,255,255,0.15);">✕</button>
+    </div>
+    <div class="copilot-drawer-body" id="copilot-messages">
+      <div class="chat-bubble bot">
+        Hi there! I am Arshad Khan's AI assistant. Ask me anything about his full-stack MERN expertise, Python AI chatbots, Supabase database schemas, or production projects!
+      </div>
+    </div>
+    <div class="copilot-drawer-footer">
+      <input type="text" class="copilot-input" id="copilot-input" placeholder="Ask about Majdoor Mitra, SpendWise, skills..." />
+      <button class="copilot-send" id="copilot-send">Send</button>
+    </div>
+  </div>
+
+  <!-- Production Projects Modal (Opened from Scene 5 or CTA) -->
+  <div class="portal-modal-overlay" id="projects-modal">
+    <div class="portal-modal">
+      <button class="modal-close-btn" id="close-projects-modal">✕</button>
+      <span class="project-badge">STAGE 05 // PRODUCTION ARSENAL</span>
+      <h2 style="font-size: 2rem; margin: 8px 0 6px; color: #18181B; font-weight: 800;">Featured Engineering Projects</h2>
+      <p style="color: #52525B; margin-bottom: 24px; font-size: 1.05rem;">
+        Deep dive into real-world applications designed and developed by Arshad Khan.
+      </p>
+
+      <div class="project-grid">
+        <!-- Majdoor Mitra Card -->
+        <div class="project-card">
+          <img src="assets/majdoor-mitra-preview.svg" alt="Majdoor Mitra Platform Mockup" class="project-card-img" />
+          <span class="project-badge">MERN + Multilingual Assistance</span>
+          <h3 class="project-title">Majdoor Mitra (मजदूर मित्र)</h3>
+          <p class="project-desc">
+            A comprehensive labor welfare and direct job-matching platform bridging daily-wage workers with contractors, eliminating exploitative middlemen with multilingual voice-assisted navigation and direct payment records.
+          </p>
+          <div class="project-tech-pills">
+            <span class="project-tech-pill">React.js</span>
+            <span class="project-tech-pill">Node.js</span>
+            <span class="project-tech-pill">Express</span>
+            <span class="project-tech-pill">MongoDB</span>
+            <span class="project-tech-pill">REST APIs</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/Arshad2048" target="_blank" class="project-btn project-btn--primary">GitHub Code</a>
+            <button class="project-btn project-btn--outline ask-about-btn" data-project="Majdoor Mitra">Ask AI About Architecture</button>
+          </div>
+        </div>
+
+        <!-- SpendWise Card -->
+        <div class="project-card">
+          <img src="assets/spendwise-preview.svg" alt="SpendWise Fintech Dashboard Mockup" class="project-card-img" />
+          <span class="project-badge">Supabase + PostgreSQL + Analytics</span>
+          <h3 class="project-title">SpendWise</h3>
+          <p class="project-desc">
+            Smart personal finance and automated budget intelligence engine. Built with real-time Supabase PostgreSQL relational schemas, strict Row Level Security (RLS), dynamic categorization, and spending analytics.
+          </p>
+          <div class="project-tech-pills">
+            <span class="project-tech-pill">Supabase</span>
+            <span class="project-tech-pill">PostgreSQL</span>
+            <span class="project-tech-pill">SQL RLS</span>
+            <span class="project-tech-pill">React</span>
+            <span class="project-tech-pill">Tailwind</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/Arshad2048" target="_blank" class="project-btn project-btn--primary">GitHub Code</a>
+            <button class="project-btn project-btn--outline ask-about-btn" data-project="SpendWise">Ask AI About Architecture</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scrub Engine Script -->
+  <script src="scrub-engine.js"></script>
+
+  <!-- Mount lets-scroll Engine -->
+  <script>
+    mountLetsScroll(document.getElementById('world'), {
+      brand: { name: 'ARSHAD KHAN', href: '#top' },
+      cta: { label: 'Explore Projects', href: '#projects-modal' },
+      hint: 'scroll to fly into the 3d world',
+      diveScroll: 1.4,
+      connScroll: 0.9,
+      sections: [
+        // Scene 0: Overworld Intro
+        {
+          id: 'citadel',
+          label: 'The Citadel',
+          clip: 'assets/clip0.mp4',
+          accent: '#F97316',
+          scroll: 1.6,
+          linger: 0.45,
+          eyebrow: 'Stage 00 // The Overworld',
+          title: 'The Citadel of Code.',
+          body: 'An aerial panoramic view of my unified full-stack ecosystem — where intuitive UI, backend machinery, and AI pipelines live as one connected island.',
+          tags: ['Full-Stack', 'Architecture', 'AI Automation']
+        },
+
+        // Scene 1: Developer Workshop
+        {
+          id: 'workshop',
+          label: 'Workshop',
+          clip: 'assets/clip1.mp4',
+          accent: '#06B6D4',
+          scroll: 1.4,
+          linger: 0.4,
+          eyebrow: 'Stage 01 // Foundation',
+          title: "The Developer's Workshop.",
+          body: 'Where ideas transform into functional software. Engineered with clean semantic component design, responsive ergonomics, and modern developer tooling.',
+          tags: ['React.js', 'Clean Architecture', 'Modern UI/UX']
+        },
+
+        // Scene 2: MERN Stack Engine
+        {
+          id: 'mern',
+          label: 'MERN Stack',
+          clip: 'assets/clip2.mp4',
+          accent: '#10B981',
+          scroll: 1.4,
+          linger: 0.4,
+          eyebrow: 'Stage 02 // Full-Stack Core',
+          title: 'The MERN Engine Room.',
+          body: 'Powered by React on the frontend, Node.js and Express REST API conduits in the middle, and flexible MongoDB document stores on the data layer.',
+          tags: ['React', 'Node.js', 'Express.js', 'MongoDB']
+        },
+
+        // Scene 3: Python AI Automation
+        {
+          id: 'ai',
+          label: 'Python AI',
+          clip: 'assets/clip3.mp4',
+          accent: '#F59E0B',
+          scroll: 1.4,
+          linger: 0.4,
+          eyebrow: 'Stage 03 // Intelligence',
+          title: 'Python AI & Chatbot Lab.',
+          body: 'Engineering conversational LLM agents, FastAPI webhooks, and automated intelligent workflows that automate real user journeys.',
+          tags: ['Python', 'AI Chatbots', 'LLMs', 'Webhooks']
+        },
+
+        // Scene 4: Supabase & SQL Data Vault
+        {
+          id: 'data',
+          label: 'Supabase SQL',
+          clip: 'assets/clip4.mp4',
+          accent: '#3ECF8E',
+          scroll: 1.4,
+          linger: 0.4,
+          eyebrow: 'Stage 04 // Data Integrity',
+          title: 'Supabase & SQL Vault.',
+          body: 'Architecting relational schemas with PostgreSQL, strict Row Level Security (RLS) policies, real-time database subscriptions, and analytics.',
+          tags: ['Supabase', 'PostgreSQL', 'Row Level Security', 'SQL']
+        },
+
+        // Scene 5: Featured Projects Arena
+        {
+          id: 'projects',
+          label: 'Project Arena',
+          clip: 'assets/clip5.mp4',
+          accent: '#8B5CF6',
+          scroll: 1.7,
+          linger: 0.45,
+          eyebrow: 'Stage 05 // Production Arsenal',
+          title: 'The Featured Project Arena.',
+          body: 'Production platforms built for real impact — including Majdoor Mitra (worker job matching) and SpendWise (automated expense tracking).',
+          tags: ['Majdoor Mitra', 'SpendWise', 'Full-Stack'],
+          cta: {
+            primary: { label: 'Open Project Showcase', href: '#projects-modal' },
+            secondary: { label: 'View GitHub Repos', href: 'https://github.com/Arshad2048' }
+          }
+        },
+
+        // Scene 6: Command Deck & AI Copilot Finale
+        {
+          id: 'copilot',
+          label: 'Command Deck',
+          clip: 'assets/clip5.mp4',
+          accent: '#6366F1',
+          scroll: 1.8,
+          linger: 0.5,
+          eyebrow: 'Stage 06 // Connect & Collaborate',
+          title: 'Command Deck & AI Copilot.',
+          body: 'Interactive gateway to connect with Arshad Khan, chat with the in-browser AI copilot, explore code architectures, and collaborate.',
+          tags: ['Full-Stack Developer', 'AI Automation', 'Available for Hire'],
+          cta: {
+            primary: { label: 'Chat with AI Copilot', href: '#open-ai' },
+            secondary: { label: 'GitHub @Arshad2048', href: 'https://github.com/Arshad2048' }
+          }
+        }
+      ],
+      connectors: []
+    });
+
+    // Interactive Modal & AI Drawer Handlers
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('projects-modal');
+      const closeModal = document.getElementById('close-projects-modal');
+      const drawer = document.getElementById('copilot-drawer');
+      const openDrawerBtn = document.getElementById('open-copilot-btn');
+      const closeDrawerBtn = document.getElementById('close-copilot-btn');
+
+      // Open Modal on link click
+      document.body.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (link && link.getAttribute('href') === '#projects-modal') {
+          e.preventDefault();
+          modal.classList.add('active');
+        }
+        if (link && link.getAttribute('href') === '#open-ai') {
+          e.preventDefault();
+          drawer.classList.add('active');
+        }
+      });
+
+      if (closeModal) closeModal.addEventListener('click', () => modal.classList.remove('active'));
+      if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+
+      // Copilot Drawer
+      if (openDrawerBtn) openDrawerBtn.addEventListener('click', () => drawer.classList.toggle('active'));
+      if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', () => drawer.classList.remove('active'));
+
+      // AI Chat Logic
+      const chatMessages = document.getElementById('copilot-messages');
+      const chatInput = document.getElementById('copilot-input');
+      const sendBtn = document.getElementById('copilot-send');
+
+      function addMessage(text, isUser = false) {
+        const bubble = document.createElement('div');
+        bubble.className = `chat-bubble ${isUser ? 'user' : 'bot'}`;
+        bubble.textContent = text;
+        chatMessages.appendChild(bubble);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function handleChat() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+        addMessage(text, true);
+        chatInput.value = '';
+
+        setTimeout(() => {
+          const lower = text.toLowerCase();
+          if (lower.includes('majdoor') || lower.includes('mitra')) {
+            addMessage('Majdoor Mitra (मजदूर मित्र) is a MERN stack platform designed to eliminate middleman exploitation by connecting daily-wage workers directly with contractors through multilingual voice navigation and transparent job logging.');
+          } else if (lower.includes('spendwise') || lower.includes('finance') || lower.includes('budget')) {
+            addMessage('SpendWise is an intelligent expense tracking platform powered by Supabase PostgreSQL, strict Row Level Security (RLS) policies, and real-time financial aggregation charts.');
+          } else if (lower.includes('skill') || lower.includes('stack') || lower.includes('tech')) {
+            addMessage('Arshad specializes in Full-Stack MERN (MongoDB, Express, React, Node), Python AI Chatbot Automations, Supabase/SQL relational databases, and interactive 3D web experiences.');
+          } else if (lower.includes('contact') || lower.includes('hire') || lower.includes('github') || lower.includes('email')) {
+            addMessage('You can connect with Arshad directly on GitHub at https://github.com/Arshad2048 or via email. He is ready for full-stack and AI developer roles!');
+          } else {
+            addMessage(`Thanks for asking about "${text}"! Arshad is a passionate Full-Stack & AI developer skilled in MERN, Python LLMs, and Supabase. You can explore his code on GitHub @Arshad2048!`);
+          }
+        }, 500);
+      }
+
+      if (sendBtn) sendBtn.addEventListener('click', handleChat);
+      if (chatInput) chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleChat(); });
+
+      // Ask About buttons in project modal
+      document.querySelectorAll('.ask-about-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const project = btn.getAttribute('data-project');
+          modal.classList.remove('active');
+          drawer.classList.add('active');
+          chatInput.value = `Tell me about the architecture of ${project}`;
+          handleChat();
+        });
+      });
+    });
+  </script>
+</body>
+</html>
