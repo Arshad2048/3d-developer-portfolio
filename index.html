@@ -453,17 +453,19 @@
   </div>
 
   <!-- Scrub Engine Script -->
-  <script src="scrub-engine.js"></script>
+  <script src="scrub-engine.js?v=20260820-11"></script>
 
   <!-- Mount lets-scroll Engine -->
   <script>
     mountLetsScroll(document.getElementById('world'), {
       brand: { name: 'ARSHAD KHAN', href: '#top' },
       cta: { label: 'Explore Projects', href: '#projects-modal' },
+      nav: false,
       hint: 'scroll to fly into the 3d world',
       diveScroll: 1.4,
       connScroll: 0.9,
       motion: 'always',
+      snap: 1,
       sections: [
         // Scene 0: Overworld Intro
         {
@@ -471,6 +473,7 @@
           label: 'The Citadel',
           still: 'assets/still_00.png',
           clip: 'assets/clip0.mp4',
+          startAt: 1,
           accent: '#F97316',
           scroll: 1.6,
           linger: 0.45,
@@ -486,6 +489,10 @@
           label: 'Workshop',
           still: 'assets/still_01.png',
           clip: 'assets/clip1.mp4',
+          startAt: 1,
+          // Direct mapping is intentional: smoothing made this clip lag behind the
+          // section boundary and switch to the next scene before reaching its end.
+          snap: 1,
           accent: '#06B6D4',
           scroll: 1.4,
           linger: 0.4,
@@ -501,6 +508,11 @@
           label: 'MERN Stack',
           still: 'assets/still_02.png',
           clip: 'assets/clip2.mp4',
+          // Measured from clip2: 14px side bars in a 192px frame from 0–5s
+          // (usable width 164px). Keep this crop constant so the video element
+          // never shrinks and exposes a black/empty side margin.
+          videoScale: 1.19,
+          videoScaleMode: 'constant',
           accent: '#10B981',
           scroll: 1.4,
           linger: 0.4,
@@ -516,6 +528,7 @@
           label: 'Python AI',
           still: 'assets/still_03.png',
           clip: 'assets/clip3.mp4',
+          startAt: 1,
           accent: '#F59E0B',
           scroll: 1.4,
           linger: 0.4,
@@ -531,6 +544,7 @@
           label: 'Supabase SQL',
           still: 'assets/still_04.png',
           clip: 'assets/clip4.mp4',
+          startAt: 1,
           accent: '#3ECF8E',
           scroll: 1.4,
           linger: 0.4,
@@ -546,6 +560,10 @@
           label: 'Project Arena',
           still: 'assets/still_05.png',
           clip: 'assets/clip5.mp4',
+          // Use the same constant crop that fixes clip2: clip5's source framing
+          // changes during playback, so never release the crop or let it zoom out.
+          videoScale: 1.19,
+          videoScaleMode: 'constant',
           accent: '#8B5CF6',
           scroll: 1.7,
           linger: 0.45,
@@ -564,7 +582,8 @@
           id: 'copilot',
           label: 'Command Deck',
           still: 'assets/still_06.png',
-          clip: 'assets/clip5.mp4',
+          // clip5.mp4 ends on still_06, so this finale intentionally holds that
+          // landing frame instead of loading and rendering clip5 a second time.
           accent: '#6366F1',
           scroll: 1.8,
           linger: 0.5,

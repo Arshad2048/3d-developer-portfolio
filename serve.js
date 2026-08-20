@@ -50,9 +50,12 @@ const server = http.createServer((req, res) => {
     const totalSize = stats.size;
     const range = req.headers.range;
 
-    // CORS & Cache Headers
+    // CORS, range, and development cache headers. The scrub engine is frequently
+    // edited while testing, so stale JS would otherwise make the route rail appear
+    // to keep controlling clips after its handlers have been removed.
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Accept-Ranges', 'bytes');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
 
     if (range) {
       // 206 Partial Content for instant video seeking

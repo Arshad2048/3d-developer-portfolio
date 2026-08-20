@@ -82,6 +82,10 @@ function mountLetsScroll(container, config) {
   const DIVE_W = config.diveScroll || 1.3;
   const CONN_W = config.connScroll || 0.9;
   const CROSSFADE = (config.crossfade != null) ? config.crossfade : 0.12;  // seam dissolve width (vh)
+  // Scroll→time responsiveness. 1 = direct 1:1 (full scroll control); lower values
+  // glide/float behind the scroll. 0.18 is the old floaty default. A section can
+  // override this with its own `snap`.
+  const SNAP = (config.snap != null) ? config.snap : 0.18;
   const N = SECTIONS.length;
   if (!N) return;
 
@@ -92,7 +96,9 @@ function mountLetsScroll(container, config) {
   const SEGMENTS = [];
   SECTIONS.forEach((s, i) => {
     const dive = { kind: 'dive', si: i, clip: s.clip, clipM: s.clipMobile, still: s.still, stillM: s.stillMobile,
-                   accent: s.accent, w: s.scroll || DIVE_W, linger: s.linger || 0 };
+                   accent: s.accent, w: s.scroll || DIVE_W, linger: s.linger || 0, startAt: s.startAt || 0,
+                   snap: s.snap, videoScale: s.videoScale || 1, videoEndScale: s.videoEndScale || 1,
+                   videoScaleMode: s.videoScaleMode || 'inverse', cropUntil: s.cropUntil || 0.55 };
     SEGMENTS.push(dive);
     s._seg = dive;
     // A connector is optional: if connectors[i] is falsy, the two dives simply
@@ -164,13 +170,20 @@ function mountLetsScroll(container, config) {
       (s.cta ? `<div class="sw-copy__cta">${ctaBtns(s.cta)}</div>` : '');
     copylayer.appendChild(c); copies.push(c);
 
-    const dot = el('button', 'sw-route__dot'); dot.style.setProperty('--sw-accent', s.accent || '');
+    // The right rail is a passive progress indicator. It must never scroll the page
+    // or call jumpTo(), because navigation can make a clip appear to skip to its end.
+    const dot = el('span', 'sw-route__dot'); dot.style.setProperty('--sw-accent', s.accent || '');
+    dot.setAttribute('aria-label', s.label || `Section ${i + 1}`);
     dot.innerHTML = `<span class="sw-route__label">${esc(s.label || '')}</span><i></i>`;
-    dot.addEventListener('click', () => jumpTo(i)); route.appendChild(dot); dots.push(dot);
+    route.appendChild(dot); dots.push(dot);
 
     if (config.nav !== false) {
-      const b = el('button', 'sw-nav__item'); b.textContent = s.label || '';
-      b.addEventListener('click', () => jumpTo(i)); nav.appendChild(b);
+      // The scene navbar is informational only. Navigation jumps into the middle
+      // of a clip, so it must not change scroll position or video currentTime.
+      const b = el('span', 'sw-nav__item');
+      b.textContent = s.label || '';
+      b.setAttribute('aria-label', s.label || `Section ${i + 1}`);
+      nav.appendChild(b);
     }
   });
 
@@ -195,14 +208,10 @@ function mountLetsScroll(container, config) {
     read();
   }
 
-  function jumpTo(i) {
-    const seg = SECTIONS[i]._seg;
-    window.scrollTo({ top: seg.start + (seg.end - seg.start) * 0.5, behavior: reduce ? 'auto' : 'smooth' });
-  }
-
   function attachVideo(s, src) {
     const v = document.createElement('video');
     v.className = 'sw-scene__video';
+    v.style.transformOrigin = 'center center';
     v.muted = true; v.playsInline = true; v.preload = 'auto';
     v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
     v.src = src;
@@ -293,9 +302,32 @@ function mountLetsScroll(container, config) {
       // cur keeps lerping, so we snap to the latest target the moment it's free.
       if (s.video.seeking) continue;
       if (!s.visible && Math.abs(s.cur - s.target) < 0.002) continue;
-      s.cur += (s.target - s.cur) * (reduceClips ? 1 : 0.18);
+      const sn = (s.snap != null) ? s.snap : SNAP;
+      s.cur += (s.target - s.cur) * (reduceClips ? 1 : sn);
       const dur = s.video.duration || 1;
-      const t = clamp(s.cur, 0, 0.999) * dur;
+      // `startAt` shifts where the scrub begins inside the clip (e.g. skip a 1s
+      // fade-in on the first scene); progress 0..1 then maps start..duration.
+      const start = Math.min(s.startAt || 0, Math.max(0, dur - 0.02));
+      const span = Math.max(dur - start, 0.01);
+      const progress = clamp(s.cur, 0, 0.999);
+      const t = start + progress * span;
+      if (s.videoScale !== 1 || s.videoEndScale !== 1) {
+        // Measured clip-specific framing correction. Constant mode is used when
+        // shrinking the video would expose a black/empty margin around the element.
+        let scale;
+        if (s.videoScaleMode === 'constant') {
+          scale = s.videoScale;
+        } else {
+          const transition = clamp(s.cropUntil, 0.01, 0.99);
+          const earlyProgress = smooth(clamp(progress / transition));
+          const lateProgress = smooth(clamp((progress - transition) / (1 - transition)));
+          scale = s.videoScale + (1 - s.videoScale) * earlyProgress
+            + (s.videoEndScale - 1) * lateProgress;
+        }
+        s.video.style.transform = `scale(${scale.toFixed(4)})`;
+      } else {
+        s.video.style.transform = 'scale(1)';
+      }
       if (Math.abs(s.video.currentTime - t) > eps) { try { s.video.currentTime = t; } catch (e) {} }
     }
     requestAnimationFrame(raf);
@@ -389,13 +421,14 @@ function injectCSS() {
   .sw-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--sw-ink);}
   .sw-brand__mark{width:24px;height:28px;border-radius:7px 7px 10px 10px;background:linear-gradient(160deg,var(--sw-accent),color-mix(in srgb,var(--sw-accent) 60%,#000));box-shadow:0 6px 14px color-mix(in srgb,var(--sw-accent) 40%,transparent);}
   .sw-brand__name{font-family:var(--sw-font-display);font-weight:700;font-size:1.1rem;}
-  .sw-nav{display:flex;gap:4px;padding:5px;background:color-mix(in srgb,#fff 55%,transparent);backdrop-filter:blur(10px);border:1px solid color-mix(in srgb,var(--sw-accent) 16%,transparent);border-radius:999px;}
-  .sw-nav__item{font:inherit;font-size:.82rem;color:var(--sw-ink-soft);border:0;background:transparent;cursor:pointer;padding:7px 14px;border-radius:999px;transition:color .25s,background .25s;}
+  .sw-nav{display:flex;gap:4px;padding:5px;background:color-mix(in srgb,#fff 55%,transparent);backdrop-filter:blur(10px);border:1px solid color-mix(in srgb,var(--sw-accent) 16%,transparent);border-radius:999px;pointer-events:none;}
+  .sw-nav__item{font:inherit;font-size:.82rem;color:var(--sw-ink-soft);padding:7px 14px;border-radius:999px;transition:color .25s,background .25s;}
   .sw-nav__item:hover{color:var(--sw-ink);} .sw-nav__item.is-active{color:#fff;background:var(--sw-accent);}
   .sw-topcta{text-decoration:none;font-weight:600;font-size:.9rem;color:#fff;background:var(--sw-ink);padding:10px 20px;border-radius:999px;white-space:nowrap;}
   .sw-stage{position:fixed;inset:0;z-index:10;pointer-events:none;}
   .sw-scene{position:absolute;inset:0;opacity:0;overflow:hidden;will-change:opacity;}
   .sw-scene__video,.sw-scene__still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;}
+  .sw-scene__video{will-change:transform;}
   .sw-scene__still{will-change:transform;} .sw-scene.has-clip .sw-scene__still{opacity:0;} .sw-scene__video{z-index:1;}
   .sw-copylayer{position:fixed;inset:0;z-index:20;pointer-events:none;}
   .sw-copylayer::before{content:"";position:absolute;inset:0;width:min(58vw,780px);background:linear-gradient(90deg,var(--sw-bg) 0%,color-mix(in srgb,var(--sw-bg) 82%,transparent) 34%,color-mix(in srgb,var(--sw-bg) 40%,transparent) 62%,transparent 100%);}
@@ -410,9 +443,9 @@ function injectCSS() {
   .sw-btn{text-decoration:none;font-weight:600;font-size:.95rem;padding:13px 24px;border-radius:999px;transition:transform .2s;}
   .sw-btn--primary{color:#fff;background:var(--sw-ink);} .sw-btn--primary:hover{transform:translateY(-2px);}
   .sw-btn--ghost{color:var(--sw-ink);border:1.5px solid color-mix(in srgb,var(--sw-ink) 25%,transparent);} .sw-btn--ghost:hover{transform:translateY(-2px);}
-  .sw-route{position:fixed;right:clamp(14px,2.4vw,30px);top:50%;z-index:40;transform:translateY(-50%);display:flex;flex-direction:column;gap:22px;padding:18px 10px;}
+  .sw-route{position:fixed;right:clamp(14px,2.4vw,30px);top:50%;z-index:40;transform:translateY(-50%);display:flex;flex-direction:column;gap:22px;padding:18px 10px;pointer-events:none;}
   .sw-route::before{content:"";position:absolute;left:50%;top:22px;bottom:22px;width:2px;transform:translateX(-50%);background:var(--sw-accent);opacity:.28;}
-  .sw-route__dot{position:relative;border:0;background:transparent;cursor:pointer;width:14px;height:14px;display:grid;place-items:center;}
+  .sw-route__dot{position:relative;width:14px;height:14px;display:grid;place-items:center;}
   .sw-route__dot i{width:9px;height:9px;border-radius:50%;background:color-mix(in srgb,var(--sw-accent) 40%,transparent);transition:transform .3s,background .3s,box-shadow .3s;}
   .sw-route__dot:hover i{transform:scale(1.25);background:var(--sw-accent);}
   .sw-route__dot.is-active i{background:var(--sw-accent);transform:scale(1.4);box-shadow:0 0 0 5px color-mix(in srgb,var(--sw-accent) 22%,transparent);}
