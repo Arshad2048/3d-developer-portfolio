@@ -19,13 +19,22 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
-  let reqPath = decodeURIComponent(req.url.split('?')[0]);
+  const isHead = req.method === 'HEAD';
+
+  // Normalize + protect against path traversal
+  let reqPath;
+  try {
+    reqPath = decodeURIComponent(req.url.split('?')[0]);
+  } catch (e) {
+    res.writeHead(400); return res.end('Bad Request');
+  }
   if (reqPath === '/') reqPath = '/index.html';
 
-  const filePath = path.join(__dirname, reqPath);
+  const filePath = path.normalize(path.join(__dirname, reqPath));
+  const rootPrefix = path.resolve(__dirname) + path.sep;
 
-  // Security check
-  if (!filePath.startsWith(__dirname)) {
+  // Security check: resolved path must stay inside the project root
+  if (filePath !== path.resolve(__dirname) && !filePath.startsWith(rootPrefix)) {
     res.writeHead(403);
     return res.end('Forbidden');
   }
@@ -47,10 +56,30 @@ const server = http.createServer((req, res) => {
 
     if (range) {
       // 206 Partial Content for instant video seeking
-      const parts = range.replace(/bytes=/, '').split('-');
-      const start = parseInt(parts[0], 10);
-      const end = parts[1] ? parseInt(parts[1], 10) : totalSize - 1;
-      const chunkSize = (end - start) + 1;
+      const match = /^bytes=(\d*)-(\d*)$/.exec(range);
+      if (!match) {
+        res.writeHead(400); return res.end('Bad Request');
+      }
+      let start = match[1] === '' ? null : parseInt(match[1], 10);
+      let end = match[2] === '' ? null : parseInt(match[2], 10);
+
+      // Suffix range: bytes=-N  →  last N bytes
+      if (start === null) {
+        start = Math.max(0, totalSize - end);
+        end = totalSize - 1;
+      } else {
+        if (start >= totalSize) {
+          res.writeHead(416, { 'Content-Range': `bytes */${totalSize}` });
+          return res.end();
+        }
+        if (end === null || end >= totalSize) end = totalSize - 1;
+      }
+      if (start > end) {
+        res.writeHead(416, { 'Content-Range': `bytes */${totalSize}` });
+        return res.end();
+      }
+
+      const chunkSize = end - start + 1;
 
       res.writeHead(206, {
         'Content-Range': `bytes ${start}-${end}/${totalSize}`,
@@ -58,7 +87,7 @@ const server = http.createServer((req, res) => {
         'Content-Length': chunkSize,
         'Content-Type': mime
       });
-
+      if (isHead) return res.end();
       const stream = fs.createReadStream(filePath, { start, end });
       stream.pipe(res);
     } else {
@@ -66,6 +95,7 @@ const server = http.createServer((req, res) => {
         'Content-Length': totalSize,
         'Content-Type': mime
       });
+      if (isHead) return res.end();
       fs.createReadStream(filePath).pipe(res);
     }
   });

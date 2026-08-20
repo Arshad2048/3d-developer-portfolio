@@ -65,6 +65,11 @@
 
 function mountLetsScroll(container, config) {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Reduced-motion handling. Default: respect the OS/browser preference and show
+  // the stills only (no video decode cost). Set config.motion = 'always' to always
+  // scrub the video chain — for site owners whose audience expects the full
+  // experience even when Windows "animation effects" / OS reduce-motion is on.
+  const reduceClips = (config.motion === 'always') ? false : reduce;
   // Phone detection. `coarse` is captured once (input type doesn't change mid-session);
   // the ≤860px query is read live via isMobile() so a desktop resize/DevTools toggle
   // switches sources and seek behaviour without a reload.
@@ -195,28 +200,36 @@ function mountLetsScroll(container, config) {
     window.scrollTo({ top: seg.start + (seg.end - seg.start) * 0.5, behavior: reduce ? 'auto' : 'smooth' });
   }
 
+  function attachVideo(s, src) {
+    const v = document.createElement('video');
+    v.className = 'sw-scene__video';
+    v.muted = true; v.playsInline = true; v.preload = 'auto';
+    v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+    v.src = src;
+    v.addEventListener('loadedmetadata', () => { s.ready = true; read(); });
+    // Reveal the video (hide the still poster) only once a real frame has
+    // painted — on iOS a seeked-but-never-played muted video stays blank, so
+    // hiding the still on metadata alone would flash an empty scene.
+    v.addEventListener('seeked', () => { s.el.classList.add('has-clip'); }, { once: true });
+    v.addEventListener('loadeddata', () => { try { v.pause(); } catch (e) {} if (userReady) primeVideo(v); });
+    s.el.appendChild(v); s.video = v; s.hasClip = true;
+  }
+
   function loadClip(s) {
-    // Under prefers-reduced-motion we never load the clips at all — the stills stay up
-    // and simply cross-dissolve as you scroll. No scrubbed video motion, no decode cost.
-    if (reduce || s.loading || !s.clip) return;
+    // Under prefers-reduced-motion (unless config.motion = 'always') we never load
+    // the clips at all — the stills stay up and simply cross-dissolve as you scroll.
+    // No scrubbed video motion, no decode cost.
+    if (reduceClips || s.loading || !s.clip) return;
     s.loading = true;
     // Serve the lighter mobile encode on phones when one was provided.
     const url = (isMobile() && s.clipM) ? s.clipM : s.clip;
     fetch(url).then(r => r.ok ? r.blob() : Promise.reject(new Error('404')))
-      .then(blob => {
-        const v = document.createElement('video');
-        v.className = 'sw-scene__video';
-        v.muted = true; v.playsInline = true; v.preload = 'auto';
-        v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
-        v.src = URL.createObjectURL(blob);
-        v.addEventListener('loadedmetadata', () => { s.ready = true; read(); });
-        // Reveal the video (hide the still poster) only once a real frame has
-        // painted — on iOS a seeked-but-never-played muted video stays blank, so
-        // hiding the still on metadata alone would flash an empty scene.
-        v.addEventListener('seeked', () => { s.el.classList.add('has-clip'); }, { once: true });
-        v.addEventListener('loadeddata', () => { try { v.pause(); } catch (e) {} if (userReady) primeVideo(v); });
-        s.el.appendChild(v); s.video = v; s.hasClip = true;
-      }).catch(() => { s.loading = false; });
+      .then(blob => attachVideo(s, URL.createObjectURL(blob)))
+      // Fallback for file:// pages or hosts where fetch is blocked: play the
+      // clip straight from its URL. Faststart encodes (moov at the front) make
+      // this scrub correctly on byte-range hosts; worst case the still poster
+      // stays as a graceful fallback.
+      .catch(() => attachVideo(s, url));
   }
 
   function read() {
@@ -280,7 +293,7 @@ function mountLetsScroll(container, config) {
       // cur keeps lerping, so we snap to the latest target the moment it's free.
       if (s.video.seeking) continue;
       if (!s.visible && Math.abs(s.cur - s.target) < 0.002) continue;
-      s.cur += (s.target - s.cur) * (reduce ? 1 : 0.18);
+      s.cur += (s.target - s.cur) * (reduceClips ? 1 : 0.18);
       const dur = s.video.duration || 1;
       const t = clamp(s.cur, 0, 0.999) * dur;
       if (Math.abs(s.video.currentTime - t) > eps) { try { s.video.currentTime = t; } catch (e) {} }
